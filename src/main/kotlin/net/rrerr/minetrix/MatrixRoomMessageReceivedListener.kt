@@ -24,7 +24,7 @@ class MatrixRoomMessageReceivedListener(private val plugin : Main) : RoomMessage
             val messageContent = event.msg.content as ImageMessageContent
             val imageType = messageContent.mimetype.split('/').last().toUpperCase()
             val url = getMediaUrl(plugin, messageContent)
-            sendLinkMessage(plugin, url, "Image [${messageContent.width}x${messageContent.height}, $imageType]")
+            sendLinkMessage(url, "Image [${messageContent.width}x${messageContent.height}, $imageType]")
             return true
         }
 
@@ -32,7 +32,7 @@ class MatrixRoomMessageReceivedListener(private val plugin : Main) : RoomMessage
             val messageContent = event.msg.content as FileMessageContent
             val url = getMediaUrl(plugin, messageContent)
             val size = FileUtils.byteCountToDisplaySize(messageContent.size!!.toLong())
-            sendLinkMessage(plugin, url, "File [${messageContent.filename}, $size]")
+            sendLinkMessage(url, "File [${messageContent.filename}, $size]")
             return true
         }
 
@@ -40,7 +40,7 @@ class MatrixRoomMessageReceivedListener(private val plugin : Main) : RoomMessage
         return true
     }
 
-    private fun sendLinkMessage(plugin: Main, url: String, label: String) {
+    private fun sendLinkMessage(url: String, label: String) {
         val chatLink = TextComponent(label)
         chatLink.clickEvent = ClickEvent(ClickEvent.Action.OPEN_URL, url)
         plugin.server.onlinePlayers.forEach { it.spigot().sendMessage(chatLink) }
