@@ -1,0 +1,7 @@
+name: Minetrix
+version: "0.1.0"
+main: "net.rrerr.minetrix.Main"
+description: "A Minecraft-Matrix bridge thingy"
+author: "Jyrki <nilsding@nilsding.org>"
+website: "https://github.com/rrerrNet/Minetrix"
+api-version: "1.14"
