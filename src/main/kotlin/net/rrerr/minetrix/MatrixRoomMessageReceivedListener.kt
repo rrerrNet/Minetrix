@@ -80,5 +80,5 @@ class MatrixRoomMessageReceivedListener(private val plugin: Main) : RoomMessageR
     }
 
     private fun getMediaUrl(message: UrlMessageContent) =
-        "${plugin.matrixClient!!.hs.base}/media/v1/download/${message.url!!.toString().replace("mxc://", "")}"
+        "${plugin.matrixClient!!.hs.base}/_matrix/media/v1/download/${message.url!!.toString().replace("mxc://", "")}"
 }
