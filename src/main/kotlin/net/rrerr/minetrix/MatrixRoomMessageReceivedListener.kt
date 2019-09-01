@@ -64,10 +64,14 @@ class MatrixRoomMessageReceivedListener(private val plugin: Main) : RoomMessageR
         val value = ArrayList<BaseComponent>()
         val sender = TextComponent(message.sender.toString())
         sender.color = ChatColor.DARK_GREEN
-        val tooltip = ComponentBuilder(message.sender.displayname)
-            .append("\nvia Matrix").color(ChatColor.GRAY)
-            .create()
-        sender.hoverEvent = HoverEvent(HoverEvent.Action.SHOW_TEXT, tooltip)
+
+        if (plugin.useSenderTooltips) {
+            val tooltip = ComponentBuilder(message.sender.displayname)
+                .append("\nvia Matrix").color(ChatColor.GRAY)
+                .create()
+            sender.hoverEvent = HoverEvent(HoverEvent.Action.SHOW_TEXT, tooltip)
+        }
+
         value.add(TextComponent("["))
         value.add(sender)
         value.add(TextComponent("] "))
