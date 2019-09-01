@@ -24,6 +24,7 @@ class Main : JavaPlugin {
     var matrixClient : MatrixClient? = null
     var room : Room? = null
     var target : DefaultHttpTarget? = null
+    var useSenderTooltips: Boolean = false
     private val matrixEventQueue = EventQueue()
     private val minecraftChatMessageListener = MinecraftChatMessageListener(this)
     private val matrixRoomMessageReceivedListener = MatrixRoomMessageReceivedListener(this)
@@ -49,6 +50,8 @@ class Main : JavaPlugin {
             logger.info("Registering MinecraftChatMessageListener")
             server.pluginManager.registerEvents(minecraftChatMessageListener, this)
         }
+
+        useSenderTooltips = config.getBoolean("sender_tooltips")
 
         logger.info("Minetrix started up")
     }

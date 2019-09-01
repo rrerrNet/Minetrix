@@ -9,3 +9,6 @@ password: "changeme"
 
 # The room ID forward send messages from/to
 room_id: "!foo:example.com"
+
+# Adds a tooltip to the sender
+sender_tooltips: false
