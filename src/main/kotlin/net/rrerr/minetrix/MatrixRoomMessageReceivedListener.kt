@@ -22,12 +22,12 @@ class MatrixRoomMessageReceivedListener(private val plugin: Main) : RoomMessageR
         val message = createMessagePrefix(event.msg)
         val description = getMediaDescription(content)
         if (content.msgtype == MessageTypes.TEXT) {
-            message[3] = TextComponent(content.body)
+            message.add(TextComponent(content.body))
         } else {
-            message[3] = createLink(getMediaUrl(content as UrlMessageContent), description)
+            message.add(createLink(getMediaUrl(content as UrlMessageContent), description))
         }
 
-        sendMessage(message)
+        sendMessage(message.toArray(arrayOfNulls<BaseComponent>(message.size)))
         return true
     }
 
@@ -60,17 +60,19 @@ class MatrixRoomMessageReceivedListener(private val plugin: Main) : RoomMessageR
         plugin.server.onlinePlayers.forEach { it.spigot().sendMessage(ChatMessageType.CHAT, *message) }
     }
 
-    private fun createMessagePrefix(message: Message): Array<BaseComponent> {
+    private fun createMessagePrefix(message: Message): ArrayList<BaseComponent> {
+        val value = ArrayList<BaseComponent>()
         val sender = TextComponent(message.sender.toString())
         sender.color = ChatColor.DARK_GREEN
         val tooltip = ComponentBuilder(message.sender.displayname)
             .append("\nvia Matrix").color(ChatColor.GRAY)
             .create()
         sender.hoverEvent = HoverEvent(HoverEvent.Action.SHOW_TEXT, tooltip)
-        return arrayOf(
-            TextComponent("["),
-            sender,
-            TextComponent("] "))
+        value.add(TextComponent("["))
+        value.add(sender)
+        value.add(TextComponent("] "))
+
+        return value
     }
 
     private fun getMediaUrl(message: UrlMessageContent) =
