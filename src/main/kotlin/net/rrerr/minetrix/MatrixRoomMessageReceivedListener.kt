@@ -18,27 +18,26 @@ class MatrixRoomMessageReceivedListener(private val plugin: Main) : RoomMessageR
             return true
         }
 
-        if (event.msg.content.msgtype == MessageTypes.TEXT) {
-            plugin.server.broadcastMessage("[§2${event.msg.sender}§r] ${event.msg.body}")
-            return true
-        }
-
-        val content = event.msg.content as UrlMessageContent
+        val content = event.msg.content
         val message = createMessagePrefix(event.msg)
         val description = getMediaDescription(content)
-        message[3] = createLink(getMediaUrl(content), description)
+        if (content.msgtype == MessageTypes.TEXT) {
+            message[3] = TextComponent(content.body)
+        } else {
+            message[3] = createLink(getMediaUrl(content as UrlMessageContent), description)
+        }
 
         sendMessage(message)
         return true
     }
 
-    private fun getMediaDescription(content: UrlMessageContent): String {
+    private fun getMediaDescription(content: MessageContent): String {
         if (content.msgtype == MessageTypes.IMAGE) {
             return getMediaDescription(content as ImageMessageContent)
         } else if (content.msgtype == MessageTypes.FILE) {
             return getMediaDescription(content as FileMessageContent)
         }
-        return content.body;
+        return content.body
     }
 
     private fun getMediaDescription(content: ImageMessageContent): String {
