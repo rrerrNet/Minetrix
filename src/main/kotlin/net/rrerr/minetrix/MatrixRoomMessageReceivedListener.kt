@@ -46,7 +46,6 @@ class MatrixRoomMessageReceivedListener(private val plugin : Main) : RoomMessage
         plugin.server.onlinePlayers.forEach { it.spigot().sendMessage(chatLink) }
     }
 
-    private fun getMediaUrl(plugin: Main, message: UrlMessageContent): String {
-        return "${plugin.matrixClient!!.hs.base}media/v1/download${message.url!!.mediaId}"
-    }
+    private fun getMediaUrl(plugin: Main, message: UrlMessageContent): String =
+        "${plugin.matrixClient!!.hs.base}media/v1/download${message.url!!.mediaId}"
 }
