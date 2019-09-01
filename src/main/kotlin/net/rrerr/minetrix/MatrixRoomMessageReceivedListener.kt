@@ -63,7 +63,10 @@ class MatrixRoomMessageReceivedListener(private val plugin: Main) : RoomMessageR
     private fun createMessagePrefix(message: Message): Array<BaseComponent> {
         val sender = TextComponent(message.sender.toString())
         sender.color = ChatColor.DARK_GREEN
-        sender.hoverEvent = HoverEvent(HoverEvent.Action.SHOW_TEXT, ComponentBuilder(message.sender.displayname).create())
+        val tooltip = ComponentBuilder(message.sender.displayname)
+            .append("\nvia Matrix").color(ChatColor.GRAY)
+            .create()
+        sender.hoverEvent = HoverEvent(HoverEvent.Action.SHOW_TEXT, tooltip)
         return arrayOf(
             TextComponent("["),
             sender,
