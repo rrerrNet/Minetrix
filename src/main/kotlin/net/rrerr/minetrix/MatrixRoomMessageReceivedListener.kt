@@ -64,7 +64,7 @@ class MatrixRoomMessageReceivedListener(private val plugin: Main) : RoomMessageR
         val value = ArrayList<BaseComponent>()
         val sender = TextComponent(message.sender.toString())
         sender.color = ChatColor.DARK_GREEN
-        sender.clickEvent = ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, message.sender.toString())
+        sender.clickEvent = ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "${message.sender}: ")
 
         if (plugin.useSenderTooltips) {
             val tooltip = ComponentBuilder(message.sender.displayname)
