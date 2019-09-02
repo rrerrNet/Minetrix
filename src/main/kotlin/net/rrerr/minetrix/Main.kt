@@ -26,7 +26,10 @@ class Main : JavaPlugin {
     var target : DefaultHttpTarget? = null
     var useSenderTooltips: Boolean = false
     private val matrixEventQueue = EventQueue()
-    private val minecraftChatMessageListener = MinecraftChatMessageListener(this)
+    private val minecraftListeners = arrayOf(
+        MinecraftChatMessageListener(this),
+        PlayerEventListener(this)
+    )
     private val matrixRoomMessageReceivedListener = MatrixRoomMessageReceivedListener(this)
 
     companion object {
@@ -47,8 +50,10 @@ class Main : JavaPlugin {
         saveConfig()
 
         if (!(matrixClient == null || room == null)) {
-            logger.info("Registering MinecraftChatMessageListener")
-            server.pluginManager.registerEvents(minecraftChatMessageListener, this)
+            minecraftListeners.forEach {
+                logger.info("Registering ${it.javaClass.name}")
+                server.pluginManager.registerEvents(it, this)
+            }
         }
 
         useSenderTooltips = config.getBoolean("sender_tooltips")
@@ -135,4 +140,3 @@ class Main : JavaPlugin {
         }
     }
 }
-
