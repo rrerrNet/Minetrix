@@ -1,6 +1,6 @@
 # Minetrix
 
-Minetrix is a Bukkit/Spigot/PaperMC plug-in for connecting your Minecraft server with a Matrix room.
+Minetrix is a Spigot/PaperMC plug-in for connecting your Minecraft server with a Matrix room.
 
 ## Building / Installation
 
