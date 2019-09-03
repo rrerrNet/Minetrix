@@ -11,8 +11,6 @@ import org.bukkit.plugin.PluginDescriptionFile
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.plugin.java.JavaPluginLoader
 import java.io.File
-import java.lang.Exception
-import java.lang.IllegalStateException
 import java.net.URI
 
 class Main : JavaPlugin {
@@ -31,6 +29,7 @@ class Main : JavaPlugin {
         PlayerEventListener(this)
     )
     private val matrixRoomMessageReceivedListener = MatrixRoomMessageReceivedListener(this)
+    private var syncEnabled = true
 
     companion object {
         private const val SYNC_TIMEOUT = 30_000
@@ -64,6 +63,7 @@ class Main : JavaPlugin {
     override fun onDisable() {
         try {
             logger.info("Stopping Matrix sync loop")
+            syncEnabled = false
             matrixClient!!.stopSyncBlocking()
         } catch (e : IllegalStateException) {
             logger.warning("syncBlocking already stopped :thonk:")
@@ -135,8 +135,20 @@ class Main : JavaPlugin {
         }
 
         logger.info("Starting Matrix sync loop")
+        syncEnabled = true
         GlobalScope.launch(BukkitDispatcher(this, async = true)) {
+            while (syncEnabled) {
+                syncBlocking()
+            }
+        }
+    }
+
+    private suspend fun syncBlocking() {
+        try {
             matrixClient!!.syncBlocking(SYNC_TIMEOUT)
+        } catch (e : Exception) {
+            logger.warning("caught ${e} in syncBlocking, restarting this")
+            matrixClient!!.stopSyncBlocking()
         }
     }
 }
