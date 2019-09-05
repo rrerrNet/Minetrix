@@ -89,7 +89,7 @@ class MatrixRoomMessageReceivedListener(private val plugin: Main) : RoomMessageR
 
     @Throws(NoTokenException::class)
     private fun sendReadMarker(event: RoomMessageReceivedEvent) {
-        val eventId = event.id
+        val eventId = (event.msg as RoomMessageEvent).eventId
         val id = plugin.room!!.id
 
         val body = JsonObject()
