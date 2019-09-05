@@ -89,12 +89,12 @@ class MatrixRoomMessageReceivedListener(private val plugin: Main) : RoomMessageR
         "${plugin.matrixClient!!.hs.base}/_matrix/media/v1/download/${message.url!!.toString().replace("mxc://", "")}"
 
     @Throws(NoTokenException::class)
-    protected fun sendReadMarker(event: RoomMessageReceivedEvent) {
+    private fun sendReadMarker(event: RoomMessageReceivedEvent) {
         val eventId = event.id
         val id = plugin.room!!.id
         val parser = Parser.default()
         val body = parser.parse(StringBuilder("{\"m.read\": \"$eventId\"}")) as JsonObject
-        val res = plugin.target!!.put("_matrix/client/r0/rooms/$id/read_markers",
+        val res = plugin.target!!.post("_matrix/client/r0/rooms/$id/read_markers",
             plugin.matrixClient!!.token ?: throw NoTokenException(), plugin.matrixClient!!.id, body)
         MatrixClient.checkForError(res)
     }
