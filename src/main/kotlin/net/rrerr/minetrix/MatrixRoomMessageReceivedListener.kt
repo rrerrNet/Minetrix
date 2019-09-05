@@ -90,13 +90,13 @@ class MatrixRoomMessageReceivedListener(private val plugin: Main) : RoomMessageR
     @Throws(NoTokenException::class)
     private fun sendReadMarker(event: RoomMessageReceivedEvent) {
         val eventId = (event.msg as RoomMessageEvent).eventId
-        val id = plugin.room!!.id
+        val roomId = plugin.room!!.id
 
         val body = JsonObject()
         body["m.fully_read"] = eventId
         body["m.read"] = eventId
 
-        val res = plugin.target!!.post("_matrix/client/r0/rooms/$id/read_markers",
+        val res = plugin.target!!.post("_matrix/client/r0/rooms/$roomId/read_markers",
             plugin.matrixClient!!.token ?: throw NoTokenException(), plugin.matrixClient!!.id, body)
         MatrixClient.checkForError(res)
     }
