@@ -1,5 +1,8 @@
 package net.rrerr.minetrix
 
+import com.beust.klaxon.JsonObject
+import de.msrd0.matrix.client.MatrixClient
+import de.msrd0.matrix.client.NoTokenException
 import de.msrd0.matrix.client.event.*
 import de.msrd0.matrix.client.listener.RoomMessageReceivedEvent
 import de.msrd0.matrix.client.listener.RoomMessageReceivedListener
@@ -28,6 +31,7 @@ class MatrixRoomMessageReceivedListener(private val plugin: Main) : RoomMessageR
         }
 
         sendMessage(message.toArray(arrayOfNulls<BaseComponent>(message.size)))
+        sendReadMarker(event)
         return true
     }
 
@@ -82,4 +86,18 @@ class MatrixRoomMessageReceivedListener(private val plugin: Main) : RoomMessageR
 
     private fun getMediaUrl(message: UrlMessageContent) =
         "${plugin.matrixClient!!.hs.base}/_matrix/media/v1/download/${message.url!!.toString().replace("mxc://", "")}"
+
+    @Throws(NoTokenException::class)
+    private fun sendReadMarker(event: RoomMessageReceivedEvent) {
+        val eventId = (event.msg as RoomMessageEvent).eventId
+        val roomId = plugin.room!!.id
+
+        val body = JsonObject()
+        body["m.fully_read"] = eventId
+        body["m.read"] = eventId
+
+        val res = plugin.target!!.post("_matrix/client/r0/rooms/$roomId/read_markers",
+            plugin.matrixClient!!.token ?: throw NoTokenException(), plugin.matrixClient!!.id, body)
+        MatrixClient.checkForError(res)
+    }
 }
