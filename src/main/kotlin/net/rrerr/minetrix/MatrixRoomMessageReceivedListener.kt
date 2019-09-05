@@ -93,7 +93,7 @@ class MatrixRoomMessageReceivedListener(private val plugin: Main) : RoomMessageR
         val eventId = event.id
         val id = plugin.room!!.id
         val parser = Parser.default()
-        val body = parser.parse(StringBuilder("{\"m.read\": \"$eventId\"}")) as JsonObject
+        val body = parser.parse(StringBuilder("{\"m.fully_read\": \"$eventId\"}")) as JsonObject
         val res = plugin.target!!.post("_matrix/client/r0/rooms/$id/read_markers",
             plugin.matrixClient!!.token ?: throw NoTokenException(), plugin.matrixClient!!.id, body)
         MatrixClient.checkForError(res)
