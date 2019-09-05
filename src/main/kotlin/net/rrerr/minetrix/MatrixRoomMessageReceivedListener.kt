@@ -1,7 +1,6 @@
 package net.rrerr.minetrix
 
 import com.beust.klaxon.JsonObject
-import com.beust.klaxon.Parser
 import de.msrd0.matrix.client.MatrixClient
 import de.msrd0.matrix.client.NoTokenException
 import de.msrd0.matrix.client.event.*
@@ -92,8 +91,11 @@ class MatrixRoomMessageReceivedListener(private val plugin: Main) : RoomMessageR
     private fun sendReadMarker(event: RoomMessageReceivedEvent) {
         val eventId = event.id
         val id = plugin.room!!.id
-        val parser = Parser.default()
-        val body = parser.parse(StringBuilder("{\"m.fully_read\": \"$eventId\"}")) as JsonObject
+
+        val body = JsonObject()
+        body["m.fully_read"] = eventId
+        body["m.read"] = eventId
+
         val res = plugin.target!!.post("_matrix/client/r0/rooms/$id/read_markers",
             plugin.matrixClient!!.token ?: throw NoTokenException(), plugin.matrixClient!!.id, body)
         MatrixClient.checkForError(res)
