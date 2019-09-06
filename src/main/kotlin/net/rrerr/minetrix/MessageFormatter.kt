@@ -32,10 +32,10 @@ class MessageFormatter(var message: MessageContent) {
         message is FormattedTextMessageContent
 
     fun parse(): Document {
-        val formattedMessage = message as FormattedTextMessageContent
+        val body = (message as FormattedTextMessageContent).formattedBody
         val builder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
         val input = InputSource()
-        input.characterStream = StringReader(formattedMessage.formattedBody)
+        input.characterStream = StringReader("<p>$body</p>")
         return builder.parse(input)
     }
 
@@ -43,20 +43,32 @@ class MessageFormatter(var message: MessageContent) {
         val list = ArrayList<BaseComponent>()
         for (i in 0..nodes.length-1) {
             val node = nodes.item(i)
-            if (!node.hasChildNodes()) { // check for text node
-                val component = TextComponent(node.textContent)
+            if (!node.hasChildNodes()) {
+                val text = node.textContent
+                val component = TextComponent(text)
                 component.isBold = currentFormat.contains(ChatColor.BOLD)
                 component.isItalic = currentFormat.contains(ChatColor.ITALIC)
                 component.isUnderlined = currentFormat.contains(ChatColor.UNDERLINE)
                 component.isStrikethrough = currentFormat.contains(ChatColor.STRIKETHROUGH)
+
+                if (text.matches(URL_REGEX)) {
+                    component.clickEvent = ClickEvent(ClickEvent.Action.OPEN_URL, text)
+                }
+
                 list.add(component)
             } else {
                 val tag = node.nodeName.toUpperCase()
+                var style: ChatColor? = null
                 if (TAGS.containsKey(tag)) {
-                    currentFormat.add(TAGS[tag]!!)
+                    style = TAGS[tag]!!
+                    currentFormat.add(style)
                 }
 
                 list.addAll(nodesToComponents(node.childNodes))
+
+                if (style !== null) {
+                    currentFormat.remove(TAGS[tag]!!)
+                }
             }
         }
 
