@@ -22,7 +22,7 @@ class MatrixRoomMessageReceivedListener(private val plugin: Main) : RoomMessageR
         val message = createMessagePrefix(event.msg)
         val description = getMediaDescription(content)
         if (content.msgtype == MessageTypes.TEXT) {
-            message.add(TextComponent(content.body))
+            message.addAll(MessageFormatter(content).format())
         } else {
             message.add(createLink(getMediaUrl(content as UrlMessageContent), description))
         }
