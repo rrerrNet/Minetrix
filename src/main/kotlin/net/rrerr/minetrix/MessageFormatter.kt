@@ -25,7 +25,8 @@ class MessageFormatter(var message: MessageContent) {
         )
     }
 
-    val URL_REGEX = Regex("\\b(https?://)?.+\\..+(/|/\\S)?\\b")
+    val urlPattern = Regex("(https?://)?\\S+\\.\\S+(/|/\\S)?")
+    val urlStart = Regex("^https?://.*")
     val currentFormat = mutableSetOf<ChatColor>()
 
     fun isFormatteed() =
@@ -44,18 +45,7 @@ class MessageFormatter(var message: MessageContent) {
         for (i in 0..nodes.length-1) {
             val node = nodes.item(i)
             if (!node.hasChildNodes()) {
-                val text = node.textContent
-                val component = TextComponent(text)
-                component.isBold = currentFormat.contains(ChatColor.BOLD)
-                component.isItalic = currentFormat.contains(ChatColor.ITALIC)
-                component.isUnderlined = currentFormat.contains(ChatColor.UNDERLINE)
-                component.isStrikethrough = currentFormat.contains(ChatColor.STRIKETHROUGH)
-
-                if (text.matches(URL_REGEX)) {
-                    component.clickEvent = ClickEvent(ClickEvent.Action.OPEN_URL, text)
-                }
-
-                list.add(component)
+                list.addAll(formatPlainMessage(node.textContent))
             } else {
                 val tag = node.nodeName.toUpperCase()
                 var style: ChatColor? = null
@@ -75,19 +65,30 @@ class MessageFormatter(var message: MessageContent) {
         return list
     }
 
-    fun formatPlainMessage(): ArrayList<BaseComponent> {
-        val words = message.body.split(" ")
+    fun createTextComponent(text: String): BaseComponent {
+        val component = TextComponent(text)
+        component.isBold = currentFormat.contains(ChatColor.BOLD)
+        component.isItalic = currentFormat.contains(ChatColor.ITALIC)
+        component.isUnderlined = currentFormat.contains(ChatColor.UNDERLINE)
+        component.isStrikethrough = currentFormat.contains(ChatColor.STRIKETHROUGH)
+
+        return component
+    }
+
+    fun formatPlainMessage(text: String): ArrayList<BaseComponent> {
+        val words = text.split(" ")
         val components = ArrayList<BaseComponent>()
         val nextComponent = ArrayList<String>()
         words.forEach { word ->
-            if (word.matches(URL_REGEX)) {
+            if (word.matches(urlPattern)) {
                 if (nextComponent.size > 0) {
-                    components.add(TextComponent(nextComponent.joinToString(separator = " ")))
+                    components.add(createTextComponent(nextComponent.joinToString(separator = " ") + " "))
                     nextComponent.clear()
                 }
 
-                val link = TextComponent(word)
-                link.clickEvent = ClickEvent(ClickEvent.Action.OPEN_URL, word)
+                val link = createTextComponent("$word ")
+                val url = if (word.matches(urlStart)) word else "http://$word"
+                link.clickEvent = ClickEvent(ClickEvent.Action.OPEN_URL, url)
                 components.add(link)
             } else {
                 nextComponent.add(word)
@@ -95,7 +96,7 @@ class MessageFormatter(var message: MessageContent) {
         }
 
         if (nextComponent.size > 0) {
-            components.add(TextComponent(nextComponent.joinToString(separator = " ")))
+            components.add(createTextComponent(nextComponent.joinToString(separator = " ")))
         }
 
         return components
@@ -105,6 +106,6 @@ class MessageFormatter(var message: MessageContent) {
         if (isFormatteed()) {
             return nodesToComponents(parse().childNodes)
         }
-        return formatPlainMessage()
+        return formatPlainMessage(message.body)
     }
 }
