@@ -26,10 +26,10 @@ class MessageFormatter(var message: MessageContent) {
     }
 
     val urlPattern = Regex("(https?://)?\\S+\\.\\S+(/|/\\S)?")
-    val urlStart = Regex("^https?://.*")
+    val urlStart = Regex("^https?://")
     val currentFormat = mutableSetOf<ChatColor>()
 
-    fun isFormatteed() =
+    fun isFormatted() =
         message is FormattedTextMessageContent
 
     fun parse(): Document {
@@ -42,7 +42,7 @@ class MessageFormatter(var message: MessageContent) {
 
     fun nodesToComponents(nodes: NodeList): ArrayList<BaseComponent> {
         val list = ArrayList<BaseComponent>()
-        for (i in 0..nodes.length-1) {
+        for (i in 0 until nodes.length) {
             val node = nodes.item(i)
             if (!node.hasChildNodes()) {
                 list.addAll(formatPlainMessage(node.textContent))
@@ -87,7 +87,7 @@ class MessageFormatter(var message: MessageContent) {
                 }
 
                 val link = createTextComponent("$word ")
-                val url = if (word.matches(urlStart)) word else "http://$word"
+                val url = if (word.contains(urlStart)) word else "http://$word"
                 link.clickEvent = ClickEvent(ClickEvent.Action.OPEN_URL, url)
                 components.add(link)
             } else {
@@ -103,7 +103,7 @@ class MessageFormatter(var message: MessageContent) {
     }
 
     fun format(): ArrayList<BaseComponent> {
-        if (isFormatteed()) {
+        if (isFormatted()) {
             return nodesToComponents(parse().childNodes)
         }
         return formatPlainMessage(message.body)
