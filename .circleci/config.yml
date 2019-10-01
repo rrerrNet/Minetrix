@@ -1,0 +1,48 @@
+version: 2
+jobs:
+  build:
+    parallelism: 1
+    docker:
+      - image: circleci/ruby:2.6.4
+        environment:
+          BUNDLE_JOBS: 3
+          BUNDLE_RETRY: 3
+          BUNDLE_PATH: vendor/bundle
+    branches:
+      only: [website]
+    steps:
+      - checkout
+
+      - run:
+          name: Clone repo, again
+          command: |
+            git clone --depth 1 --branch gh-pages https://${GITHUB_TOKEN}@github.com/rrerrNet/Minetrix.git _site
+            cd _site && git rm -rf .
+
+      - restore_cache:
+          keys:
+            - website-{{ checksum "gems.locked" }}
+            - website-
+
+      - run: # Install Ruby dependencies
+          name: Bundle Install
+          command: bundle check --path vendor/bundle || bundle install --deployment
+
+      # Store bundle cache for Ruby dependencies
+      - save_cache:
+          key: website-{{ checksum "gems.locked" }}
+          paths:
+            - vendor/bundle
+
+      - run:
+          name: Build the page
+          command: ./bin/foxpage build
+
+      - deploy:
+          command: |
+            cd _site
+            git config --global user.name "${GIT_USER_NAME}"
+            git config --global user.email "${GIT_USER_EMAIL}"
+            git add .
+            git commit --allow-empty -m "[skip ci] Rebuild site"
+            git push -q https://${GITHUB_TOKEN}@github.com/rrerrNet/Minetrix.git gh-pages
