@@ -75,8 +75,6 @@ class Main : JavaPlugin {
         }
         target = null
 
-        saveConfig()
-
         logger.info("Minetrix shut down")
     }
 
