@@ -1,0 +1,41 @@
+---
+# This file defines everything that's available via `App.config` in your
+# website.
+#
+# Here are some site defaults:
+site:
+  title: "minetrix"
+  description: |-
+    Another site created with FoxPage.
+  url: "https://example.com"  # the base hostname & protocol for your site
+
+  # You can also add your own items here.  For example, here is what a list of
+  # social media sites could look like:
+  #
+  # social_media:
+  #   - name: GitHub
+  #     css_class: github
+  #     url: "https://github.com/<yourusername>"
+  #   - name: Mastodon
+  #     css_class: mastodon
+  #     url: "https://ruby.social/@<yourusername>"
+  #
+  # In a view, you can then iterate over it like this:
+  #
+  #   - App.config.site.social_media.each do |site|
+  #     %a{class: site.css_class, href: site.url}= site.name
+
+# This list defines all the assets that should be built.  By default it only
+# includes the main application style sheet.
+#
+# All image assets will be added to the assets pipeline automatically.
+#
+# To use an asset in a view, you can use the `assets_path` helper, e.g:
+#
+#    %img{src: asset_path("lisp-alien.png")}
+#
+# For style sheets, you can use the `stylesheet_link_tag` helper:
+#
+#    = stylesheet_link_tag("application.css")
+assets:
+  - application.css

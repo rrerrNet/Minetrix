@@ -1,0 +1,15 @@
+!!! 5
+%html
+  %head
+    %meta{charset: "utf-8"}
+    %meta{http_equiv: "X-UA-Compatible", content: "IE=edge"}
+    %meta{name: "viewport", content: "width=device-width"}
+
+    %title= App.config.site.title
+    %meta{name: "description", content: App.config.site.description}
+
+    = stylesheet_link_tag("application.css")
+    %link{rel: "canonical", href: App.config.site.url}
+  %body
+    = yield
+    = render("layouts/_footer")
