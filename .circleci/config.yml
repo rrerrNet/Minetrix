@@ -14,6 +14,10 @@ jobs:
       - checkout
 
       - run:
+          name: Install Bundler 2
+          command: gem install bundler
+
+      - run:
           name: Clone repo, again
           command: |
             git clone --depth 1 --branch gh-pages https://${GITHUB_TOKEN}@github.com/rrerrNet/Minetrix.git _site
