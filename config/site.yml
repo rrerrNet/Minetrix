@@ -4,10 +4,11 @@
 #
 # Here are some site defaults:
 site:
-  title: "minetrix"
+  title: "Minetrix"
   description: |-
-    Another site created with FoxPage.
-  url: "https://example.com"  # the base hostname & protocol for your site
+    A Spigot/PaperMC plug-in for connecting your Minecraft server with a Matrix room.
+  url: "https://rrerrnet.github.io/Minetrix"  # the base hostname & protocol for your site
+  base_path: "/Minetrix"
 
   # You can also add your own items here.  For example, here is what a list of
   # social media sites could look like:
