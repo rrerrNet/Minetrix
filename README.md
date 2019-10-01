@@ -1,4 +1,5 @@
 # Minetrix
+[![CircleCI](https://circleci.com/gh/rrerrNet/Minetrix.svg?style=svg)](https://circleci.com/gh/rrerrNet/Minetrix)
 
 Minetrix is a Spigot/PaperMC plug-in for connecting your Minecraft server with a
 Matrix room.
@@ -16,6 +17,6 @@ Battle tested at [rrerrNet][].
    plugins directory.
 3. Start the server, and configure the plugin via the
    `./plugins/Minetrix/config.yml` file.
-4. Everything should work like magic(tm)
+4. Everything should work like magic™
 
 [rrerrNet]: https://github.com/rrerrNet
