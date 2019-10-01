@@ -10,21 +10,15 @@ site:
   url: "https://rrerrnet.github.io/Minetrix"  # the base hostname & protocol for your site
   base_path: "/Minetrix"
 
-  # You can also add your own items here.  For example, here is what a list of
-  # social media sites could look like:
-  #
-  # social_media:
-  #   - name: GitHub
-  #     css_class: github
-  #     url: "https://github.com/<yourusername>"
-  #   - name: Mastodon
-  #     css_class: mastodon
-  #     url: "https://ruby.social/@<yourusername>"
-  #
-  # In a view, you can then iterate over it like this:
-  #
-  #   - App.config.site.social_media.each do |site|
-  #     %a{class: site.css_class, href: site.url}= site.name
+  nav:
+  - link: "/"
+    controller: "home"
+    text: "Home"
+  - link: "/changelog"
+    controller: "changelog"
+    text: "Changelog"
+  - link: "https://github.com/rrerrNet/Minetrix"
+    text: "GitHub"
 
 # This list defines all the assets that should be built.  By default it only
 # includes the main application style sheet.

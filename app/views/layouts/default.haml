@@ -10,6 +10,11 @@
 
     = stylesheet_link_tag("application.css", prepend: App.config.site.base_path)
     %link{rel: "canonical", href: App.config.site.url}
-  %body
-    = yield
-    = render("layouts/_footer")
+  %body.site
+    %header.site-header
+      = render("layouts/_header")
+    .site-body
+      %main.site-content
+        = yield
+    %footer.site-footer
+      = render("layouts/_footer")

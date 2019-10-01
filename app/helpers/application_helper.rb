@@ -1,5 +1,14 @@
 # frozen_string_literal: true
 
+require "kramdown"
+require "kramdown-parser-gfm"
+
 module ApplicationHelper
-  # All methods defined here can be used in views.
+  def markdown(text)
+    Kramdown::Document.new(
+      text,
+      input: "GFM",
+      hard_wrap: false
+    ).to_html
+  end
 end
