@@ -8,7 +8,7 @@
     %title= App.config.site.title
     %meta{name: "description", content: App.config.site.description}
 
-    = stylesheet_link_tag("application.css")
+    = stylesheet_link_tag("application.css", prepend: "/Minetrix")
     %link{rel: "canonical", href: App.config.site.url}
   %body
     = yield

@@ -4,7 +4,7 @@ GEM
     ast (2.4.0)
     concurrent-ruby (1.1.5)
     ffi (1.11.1)
-    foxpage (0.2.0)
+    foxpage (0.2.1)
       haml (~> 5.1)
       listen (~> 3.1)
       sassc (~> 2.0)
@@ -54,7 +54,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  foxpage (~> 0.2.0)
+  foxpage (~> 0.2.1)
   rubocop
 
 BUNDLED WITH
