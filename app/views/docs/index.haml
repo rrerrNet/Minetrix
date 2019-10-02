@@ -1,0 +1,14 @@
+.item
+  .item-header
+    Documentation
+  .item-body
+    The following pages are available:
+
+    %ul
+      - @pages.each do |page|
+        %li
+          %a{href: page.url}= page.title
+
+    Found a mistake or want to extend the docs?
+    %a{href: "https://github.com/rrerrNet/Minetrix/tree/website/data/docs"}
+      Contribute to them!

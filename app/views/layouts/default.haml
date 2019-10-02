@@ -16,5 +16,8 @@
     .site-body
       %main.site-content
         = yield
+      - if @aside
+        %aside.site-side
+          = render @aside
     %footer.site-footer
       = render("layouts/_footer")

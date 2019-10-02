@@ -1,0 +1,7 @@
+.side-item
+  .side-item-header More docs
+  .side-item-body
+    %ul
+      - @pages.each do |page|
+        %li
+          %a{href: page.url}= page.title

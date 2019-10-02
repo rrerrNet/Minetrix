@@ -1,2 +1,3 @@
 # Discourage committing the built site to a git repo
 /_site
+!docs

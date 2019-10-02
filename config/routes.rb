@@ -6,9 +6,5 @@ App.draw_routes do
 
   map "/changelog" => "changelog#index"
 
-  # Additional routes can be created by using `map`.
-  # For example to map `/projects` to the index method of ProjectsController,
-  # you can do this:
-  #
-  # map "/projects" => "projects#index"
+  resources :docs, path: "docs"
 end
