@@ -36,25 +36,46 @@ A Spigot/PaperMC plug-in for connecting your Minecraft server with a Matrix room
 <div class='site-body'>
 <main class='site-content'>
 <div class='item'>
-<div class='item-header'>
-Changelog
-</div>
-<div class='item-body'>
+<div class='item-header'>Configuration</div>
+<div class='item-body'><p>This is the default configuration:</p>
 
-<h2 id="unreleased">[Unreleased]</h2>
-<h3 id="added">Added</h3>
-<ul>
-  <li>Initial text message forwarding</li>
-  <li>File/Image message handling (#1)</li>
-  <li>Forwarding of player events (join, part, death) (#4)</li>
-  <li>Reporting of read status to the Matrix room (#6)</li>
-  <li>Matrix messages appear formatted in Minecraft (#7)</li>
-</ul>
+<pre><code class="language-yaml"># Configuration for Minetrix
 
+homeserver:
+  domain: "example.com"
+
+# Username and password to access the specified homeserver
+username: "@minetrix:example.com"
+password: "changeme"
+
+# The room ID forward send messages from/to
+room_id: "!foo:example.com"
+
+# Adds a tooltip to the sender
+sender_tooltips: false
+</code></pre>
+
+<p>TODO: Write what each config option does.</p>
 </div>
 </div>
 
 </main>
+<aside class='site-side'>
+<div class='side-item'>
+<div class='side-item-header'>More docs</div>
+<div class='side-item-body'>
+<ul>
+<li>
+<a href='/Minetrix/docs/installation'>Installation</a>
+</li>
+<li>
+<a href='/Minetrix/docs/configuration'>Configuration</a>
+</li>
+</ul>
+</div>
+</div>
+
+</aside>
 </div>
 <footer class='site-footer'>
 <div class='footer'>
