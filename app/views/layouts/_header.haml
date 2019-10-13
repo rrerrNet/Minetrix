@@ -4,5 +4,5 @@
 %nav.nav
   %ul
     - App.config.site.nav.each do |item|
-      %li
+      %li>
         %a{href: item.controller ? App.config.site.base_path + item.link : item.link}= item.text
