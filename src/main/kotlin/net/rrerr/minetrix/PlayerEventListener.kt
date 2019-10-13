@@ -1,6 +1,7 @@
 package net.rrerr.minetrix
 
 import de.msrd0.matrix.client.event.TextMessageContent
+import net.md_5.bungee.chat.TranslationRegistry
 import org.bukkit.ChatColor
 import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.PlayerDeathEvent
@@ -49,7 +50,17 @@ class PlayerEventListener(plugin: Main) : ListenerBase(plugin) {
             return
         }
 
-        val message = "🏆 ${ev.player.name} has made the advancement ${ev.advancement.key.key}"
+        // Try to look up the display name for the advancement via the TranslationRegistry.  Fall back
+        // to the raw key if no translation could be provided.
+        var advancementTitle = ev.advancement.key.key
+        val translation = TranslationRegistry.INSTANCE.translate(
+            "advancements.${advancementTitle.replace('/', '.')}.title"
+        )
+        if (translation != null) {
+            advancementTitle = translation
+        }
+
+        val message = "🏆 ${ev.player.name} has made the advancement ${advancementTitle}"
         sendMessage(TextMessageContent(message))
     }
 }
